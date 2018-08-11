@@ -17,8 +17,8 @@ public class MonsterGenerator : MonoBehaviour {
 	void Update () {
         if (Time.time > nextTime)
         {
-            nextTime = Time.time + TimeLeft;
-            Vector3 newPosition = new Vector3(Random.Range(-5.7f, -5.7f), Random.Range(-4.89f, 4.89f), 0);
+            nextTime = TimeLeft * Time.deltaTime;
+            Vector3 newPosition = new Vector3(Random.Range(-6f, -6f), Random.Range(-5f, 5f), 0);
             Instantiate(monster, newPosition, Quaternion.identity);
         }
 	}
