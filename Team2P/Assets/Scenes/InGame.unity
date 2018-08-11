@@ -171,6 +171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   cam: {fileID: 726972569}
+  bullet: {fileID: 1742741732126790, guid: 6918e562581e16341bda1f73c21bcdbd, type: 2}
 --- !u!54 &158030720
 Rigidbody:
   m_ObjectHideFlags: 0
