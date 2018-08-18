@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour {
 	// 게임의 시작, 일시정지, 종료 등을 담당
 	Timer timer;
 	public int goalTime;
+    public float score = 0f;
 
 	// Use this for initialization
 	void Start () {
