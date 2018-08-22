@@ -18,8 +18,8 @@ public class bullet : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.FindObjectOfType<Player>().gameObject;
         go = player.GetComponent<Player>().go;
-        float rotateDegree = Mathf.Atan2(go.x, go.y) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.Euler(0f, 0f, rotateDegree);
+        float rotateDegree = -Mathf.Atan2(go.x, go.y) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, rotateDegree + 90f);
     }
 	
 	// Update is called once per frame
