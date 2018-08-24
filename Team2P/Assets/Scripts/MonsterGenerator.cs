@@ -14,7 +14,10 @@ public class MonsterGenerator : MonoBehaviour {
 
     }
 	
+    // 랜덤하게 몬스터 종류도 정하고 랜덤하게 위치값도 정해야 하는데 이걸 매번 반복해서 조건문을 늘리면 복잡해지므로
+    // 위치값 정하는 함수를 따로 생성
     Vector3 Spawn() {
+        // 임의의 수치. 아래의 분기가 제대로 작동하지 않는다면 몬스터는 항상 (-20f, -20f) 위치에서 생성될 것이다
         float x = -20f;
         float y = -20f;
         int index = (int)Random.Range(0, 4);
