@@ -14,6 +14,40 @@ public class MonsterGenerator : MonoBehaviour {
 
     }
 	
+    Vector3 Spawn() {
+        float x = -20f;
+        float y = -20f;
+        int index = (int)Random.Range(0, 4);
+        switch(index) {
+            // 위에서 스폰
+            case 0: {
+                x = Random.Range(-20f, 20f);
+                y = 20f;
+            }
+            break;
+            // 왼쪽에서 스폰
+            case 1: {
+                x = -20f;
+                y = Random.Range(-20f, 20f);
+            }
+            break;
+            // 오른쪽에서 스폰
+            case 2: {
+                x = 20f;
+                y = Random.Range(-20f, 20f);
+            }
+            break;
+            // 아래에서 스폰
+            case 3: {
+                x = Random.Range(-20f, 20f);
+                y = -20f;
+            }
+            break;
+        }
+
+        return new Vector3(x, y, -1);
+    }
+
 	// Update is called once per frame
 	void Update () {
         currentTime += Time.deltaTime;
@@ -25,8 +59,8 @@ public class MonsterGenerator : MonoBehaviour {
 
                 for (int i = 0; i < 10; i++)
                 {   
-                    Vector3 newPosition = new Vector3(Random.Range(-19.5f, 19.5f), Random.Range(19.5f, 19.5f), -1);
-                    Instantiate(monster[1], newPosition, Quaternion.identity);
+                    //Vector3 newPosition = new Vector3(Random.Range(-19.5f, 19.5f), Random.Range(19.5f, 19.5f), -1);
+                    Instantiate(monster[1], Spawn(), Quaternion.identity);
                 }
 
             }
@@ -35,8 +69,8 @@ public class MonsterGenerator : MonoBehaviour {
 
                 for (int i = 0; i < 10; i++)
                 {
-                    Vector3 newPosition = new Vector3(Random.Range(20f, 20f), Random.Range(18f, -18f), -1);
-                    Instantiate(monster[0], newPosition, Quaternion.identity);
+                    //Vector3 newPosition = new Vector3(Random.Range(20f, 20f), Random.Range(18f, -18f), -1);
+                    Instantiate(monster[0], Spawn(), Quaternion.identity);
                 }
 
             }
@@ -45,8 +79,8 @@ public class MonsterGenerator : MonoBehaviour {
 
                 for (int i = 0; i < 10; i++)
                 {
-                    Vector3 newPosition = new Vector3(Random.Range(-18.9f, -18.9f), Random.Range(18.2f, -18.2f), -1);
-                    Instantiate(monster[2], newPosition, Quaternion.identity);
+                    //Vector3 newPosition = new Vector3(Random.Range(-18.9f, -18.9f), Random.Range(18.2f, -18.2f), -1);
+                    Instantiate(monster[2], Spawn(), Quaternion.identity);
                 }
 
             }
@@ -55,8 +89,8 @@ public class MonsterGenerator : MonoBehaviour {
 
                 for (int i = 0; i < 10; i++)
                 {
-                    Vector3 newPosition = new Vector3(Random.Range(-18.82f, 18.82f), Random.Range(-19.51f, -19.51f), -1);
-                    Instantiate(monster[3], newPosition, Quaternion.identity);
+                    //Vector3 newPosition = new Vector3(Random.Range(-18.82f, 18.82f), Random.Range(-19.51f, -19.51f), -1);
+                    Instantiate(monster[3], Spawn(), Quaternion.identity);
                 }
 
             }
