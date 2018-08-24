@@ -17,12 +17,15 @@ public class Player : MonoBehaviour {
     public Sprite[] ch;
     bool isDesh;
     bool isKnockingBack;
+    SoundSystem soundSystem;
+    int walkCount = 20;
     
 
 	// 플레이어의 입력을 받아 주인공 캐릭터를 조작하게 하는 스크립트
 	// Use this for initialization
 	void Start ()
     {
+        soundSystem = GameObject.FindObjectOfType<SoundSystem>();
         rb = GetComponent<Rigidbody2D>();
         isKnockingBack = false;
 	}
@@ -63,9 +66,16 @@ public class Player : MonoBehaviour {
         float v;
         h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
-        move = new Vector3(h, v, 0);
-        move = move.normalized * speed * Time.deltaTime;
-        rb.MovePosition(transform.position + move);
+        if(h != 0 || v != 0) {
+            move = new Vector3(h, v, 0);
+            move = move.normalized * speed * Time.deltaTime;
+            rb.MovePosition(transform.position + move);
+            walkCount++;
+            if(walkCount > 20) {
+                soundSystem.WalkSound();
+                walkCount = 0;
+            }
+        }
     }
 
     void Desh()
