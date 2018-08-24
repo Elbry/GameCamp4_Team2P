@@ -15,6 +15,7 @@ public class HP : MonoBehaviour {
 
     void Update()
     {
+        // 이러면 주인공 죽을 때도 점수가 올라가지 않을까요?
         if (currentHP <= 0)
         {
             Destroy(gameObject);

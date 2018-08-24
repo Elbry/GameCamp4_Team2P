@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
     float dx;
     public Sprite[] ch;
     bool isDesh;
+    bool isKnockingBack;
     
 
 	// 플레이어의 입력을 받아 주인공 캐릭터를 조작하게 하는 스크립트
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour {
 	void Start ()
     {
         rb = GetComponent<Rigidbody2D>();
+        isKnockingBack = false;
 	}
 	
 	// Update is called once per frame
@@ -38,14 +40,17 @@ public class Player : MonoBehaviour {
             Debug.Log("go: " + go);
             Instantiate(bullet, transform.position + go, Quaternion.identity);
         }
-        Move();
-        if (desh >= 1f)
+        if(isKnockingBack==false)
         {
-            Desh();
-            isDesh = true;
-        } else
-        {
-            isDesh = false;
+            Move();
+            if (desh >= 1f)
+            {
+                Desh();
+                isDesh = true;
+            } else
+            {
+                isDesh = false;
+            }
         }
         Look();
         Cam();
@@ -112,5 +117,27 @@ public class Player : MonoBehaviour {
         {
             GetComponent<SpriteRenderer>().sprite = ch[1];
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        GameObject target = collision.gameObject;
+        if (target.tag == "monster")
+        {
+            gameObject.GetComponent<HP>().currentHP -=1;
+            Vector2 relativePos = collision.contacts[0].otherRigidbody.worldCenterOfMass - collision.contacts[0].point;
+            StartCoroutine(KnockBack(gameObject, relativePos.normalized));
+        }
+    }
+
+    IEnumerator KnockBack(GameObject target, Vector2 direction) {
+        isKnockingBack = true;
+        for(int i = 0; i < 20; i++) {
+            print("moving");
+            rb.MovePosition((Vector2)transform.position + direction*Time.deltaTime*(20 - i));
+            yield return new WaitForFixedUpdate();
+        }
+        isKnockingBack = false;
+        yield break;
     }
 }

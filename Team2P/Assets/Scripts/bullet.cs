@@ -32,14 +32,4 @@ public class bullet : MonoBehaviour {
             Destroy(gameObject);
         }
 	}
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        GameObject target = collision.gameObject;
-        if (target.tag == "monster")
-        {
-            target.GetComponent<HP>().currentHP -= 1;
-        }
-        Destroy(gameObject);
-    }
 }
