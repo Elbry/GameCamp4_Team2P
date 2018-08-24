@@ -16,13 +16,21 @@ public class Player : MonoBehaviour {
     float dx;
     public Sprite[] ch;
     bool isDesh;
+    // 넉백 중에는 플레이어 조작을 제한시키기 위해 도입된 bool 변수
+    bool isKnockingBack;
+    // 음향 효과를 내기 위해 받아 놓는 오브젝트
+    SoundSystem soundSystem;
+    // 걷는 소리 주기 조절 변수
+    int walkCount = 20;
     
 
 	// 플레이어의 입력을 받아 주인공 캐릭터를 조작하게 하는 스크립트
 	// Use this for initialization
 	void Start ()
     {
+        soundSystem = GameObject.FindObjectOfType<SoundSystem>();
         rb = GetComponent<Rigidbody2D>();
+        isKnockingBack = false;
 	}
 	
 	// Update is called once per frame
@@ -38,14 +46,19 @@ public class Player : MonoBehaviour {
             Debug.Log("go: " + go);
             Instantiate(bullet, transform.position + go, Quaternion.identity);
         }
-        Move();
-        if (desh >= 1f)
+        
+        // 넉백 중이지 않을 때에만 움직이거나 대시 할 수 있도록 함
+        if(isKnockingBack==false)
         {
-            Desh();
-            isDesh = true;
-        } else
-        {
-            isDesh = false;
+            Move();
+            if (desh >= 1f)
+            {
+                Desh();
+                isDesh = true;
+            } else
+            {
+                isDesh = false;
+            }
         }
         Look();
         Cam();
@@ -58,9 +71,22 @@ public class Player : MonoBehaviour {
         float v;
         h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
-        move = new Vector3(h, v, 0);
-        move = move.normalized * speed * Time.deltaTime;
-        rb.MovePosition(transform.position + move);
+
+        // 걷는 동안 소리가 날 수 있도록 조건문 생성
+        if(h != 0 || v != 0) {
+            move = new Vector3(h, v, 0);
+            move = move.normalized * speed * Time.deltaTime;
+            rb.MovePosition(transform.position + move);
+            walkCount++;
+            
+            // 걷기 행동을 20번째 할 때마다 걷는 소리 출력
+            // 수치가 20이어야 하는 이유는 없음: 그냥 그게 제일 주기가 알맞아 보여서 설정했을 뿐
+            // 이런 식으로 20번마다 소리를 내도록 하지 않으면 프레임마다 소리가 나서 귀가 아프다
+            if(walkCount > 20) {
+                soundSystem.WalkSound();
+                walkCount = 0;
+            }
+        }
     }
 
     void Desh()
@@ -112,5 +138,33 @@ public class Player : MonoBehaviour {
         {
             GetComponent<SpriteRenderer>().sprite = ch[1];
         }
+    }
+
+    // Monster 스크립트가 푸시가 안 되어 있어서 우선 Player 쪽에 넉백 구현
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        GameObject target = collision.gameObject;
+        if (target.tag == "monster")
+        {
+            gameObject.GetComponent<HP>().currentHP -=1;
+            // 충돌이 일어난 지점과 몬스터 오브젝트의 중심 지점을 가지고 넉백되어야 할 방향 산출
+            Vector2 relativePos = collision.contacts[0].otherRigidbody.worldCenterOfMass - collision.contacts[0].point;
+            // 넉백 행동 자체는 외부의 코루틴 함수로
+            StartCoroutine(KnockBack(gameObject, relativePos.normalized));
+        }
+    }
+
+    // 코루틴 함수
+    // 비슷한 형식으로 몬스터도 넉백시킬 수 있도록 구현할 수 있다
+    // 하지만 내부에 isKnockingBack, rb처럼 Player 스크립트에만 있는 변수를 사용하고 있기 때문에 그대로 옮겨 가면 안 된다
+    IEnumerator KnockBack(GameObject target, Vector2 direction) {
+        isKnockingBack = true;
+        for(int i = 0; i < 20; i++) {
+            print("moving");
+            rb.MovePosition((Vector2)transform.position + direction*Time.deltaTime*(20 - i));
+            yield return new WaitForFixedUpdate();
+        }
+        isKnockingBack = false;
+        yield break;
     }
 }
