@@ -44,7 +44,7 @@ public class Player : MonoBehaviour {
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("go: " + go);
-            Instantiate(bullet, transform.position + go, Quaternion.identity);
+            Instantiate(bullet, transform.position + go * 0.2f, Quaternion.identity);
         }
         
         // 넉백 중이지 않을 때에만 움직이거나 대시 할 수 있도록 함
