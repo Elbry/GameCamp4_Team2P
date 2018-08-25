@@ -39,11 +39,10 @@ public class Player : MonoBehaviour {
         Look();
         if (Input.GetMouseButtonDown(1) && isDesh == false)
         {
-            desh = speed*2;
+            desh = speed*10;
         }
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("go: " + go);
             Instantiate(bullet, transform.position + go * 0.2f, Quaternion.identity);
         }
         
@@ -91,7 +90,7 @@ public class Player : MonoBehaviour {
 
     void Desh()
     {
-        rb.MovePosition(transform.position + go*desh * Time.deltaTime);
+        rb.MovePosition(transform.position + go*desh*0.2f * Time.deltaTime);
         desh -= 1f;
     }
 
@@ -160,7 +159,6 @@ public class Player : MonoBehaviour {
     IEnumerator KnockBack(GameObject target, Vector2 direction) {
         isKnockingBack = true;
         for(int i = 0; i < 20; i++) {
-            print("moving");
             rb.MovePosition((Vector2)transform.position + direction*0.2f*Time.deltaTime*(20 - i));
             yield return new WaitForFixedUpdate();
         }

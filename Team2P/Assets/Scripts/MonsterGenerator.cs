@@ -24,26 +24,26 @@ public class MonsterGenerator : MonoBehaviour {
         switch(index) {
             // 위에서 스폰
             case 0: {
-                x = Random.Range(-20f, 20f);
-                y = 20f;
+                x = Random.Range(-5f, 5f);
+                y = 5f;
             }
             break;
             // 왼쪽에서 스폰
             case 1: {
-                x = -20f;
-                y = Random.Range(-20f, 20f);
+                x = -5f;
+                y = Random.Range(-5f, 5f);
             }
             break;
             // 오른쪽에서 스폰
             case 2: {
-                x = 20f;
-                y = Random.Range(-20f, 20f);
+                x = 5f;
+                y = Random.Range(-5f, 5f);
             }
             break;
             // 아래에서 스폰
             case 3: {
-                x = Random.Range(-20f, 20f);
-                y = -20f;
+                x = Random.Range(-5f, 5f);
+                y = -5f;
             }
             break;
         }

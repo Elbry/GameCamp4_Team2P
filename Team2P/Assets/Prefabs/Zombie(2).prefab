@@ -113,8 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7dabe7ccfd6fd94c9c90fe2355d661f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 7
-  currentHP: 7
+  maxHP: 3
+  currentHP: 3
 --- !u!212 &212119492138761748
 SpriteRenderer:
   m_ObjectHideFlags: 1

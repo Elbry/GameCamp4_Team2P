@@ -9,6 +9,7 @@ public class Monster : MonoBehaviour {
     GameObject player;
     Rigidbody2D rb;
     Vector3 go;
+    bool isKnockingBack;
 
     void Awake ()
     {
@@ -18,15 +19,40 @@ public class Monster : MonoBehaviour {
 	
 	void FixedUpdate ()
     {
+        if (isKnockingBack == false)
+        {
         go = (player.transform.position - transform.position).normalized;
         rb.MovePosition(transform.position + go * speed * Time.deltaTime);
-	}
+        }
+    }
 
-    void OnCollisionStay2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == player)
         {
             player.GetComponent<HP>().currentHP -= 1;
         }
+        if (collision.gameObject.tag == "bullet")
+        {
+            Debug.Log("1    11");
+            // 충돌이 일어난 지점과 몬스터 오브젝트의 중심 지점을 가지고 넉백되어야 할 방향 산출
+            Vector2 relativePos = collision.contacts[0].otherRigidbody.worldCenterOfMass - collision.contacts[0].point;
+            // 넉백 행동 자체는 외부의 코루틴 함수로
+            StartCoroutine(KnockBack(gameObject, relativePos.normalized));
+        }
+    }
+
+    IEnumerator KnockBack(GameObject target, Vector2 direction)
+    {
+        isKnockingBack = true;
+        for (int i = 0; i < 20; i++)
+        {
+            print("moving");
+            rb.MovePosition((Vector2)transform.position + direction * 0.1f * Time.deltaTime * (20 - i));
+            print(i);
+            yield return new WaitForFixedUpdate();
+        }
+        isKnockingBack = false;
+        yield break;
     }
 }
