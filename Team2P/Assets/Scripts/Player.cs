@@ -161,7 +161,7 @@ public class Player : MonoBehaviour {
         isKnockingBack = true;
         for(int i = 0; i < 20; i++) {
             print("moving");
-            rb.MovePosition((Vector2)transform.position + direction*Time.deltaTime*(20 - i));
+            rb.MovePosition((Vector2)transform.position + direction*0.2f*Time.deltaTime*(20 - i));
             yield return new WaitForFixedUpdate();
         }
         isKnockingBack = false;
