@@ -56,7 +56,7 @@ public class MonsterGenerator : MonoBehaviour {
         currentTime += Time.deltaTime;
         if(currentTime >= interval)
         {
-            int randtime = (int)Random.Range(0, 4);
+            int randtime = (int)Random.Range(0, 5);
             if (randtime == 0)
             {
 
@@ -94,6 +94,16 @@ public class MonsterGenerator : MonoBehaviour {
                 {
                     //Vector3 newPosition = new Vector3(Random.Range(-18.82f, 18.82f), Random.Range(-19.51f, -19.51f), -1);
                     Instantiate(monster[3], Spawn(), Quaternion.identity);
+                }
+
+            }
+            if (randtime == 4)
+            {
+
+                for (int i = 0; i < 10; i++)
+                {
+                    //Vector3 newPosition = new Vector3(Random.Range(-18.82f, 18.82f), Random.Range(-19.51f, -19.51f), -1);
+                    Instantiate(monster[4], Spawn(), Quaternion.identity);
                 }
 
             }
