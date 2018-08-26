@@ -24,6 +24,7 @@ public class bullet : MonoBehaviour {
         // 이런 식으로 아래 rotateDegree 계산식에서 우변에 -를 붙이고(회전방향 교정), 오일러 변환할 때 여기에 90도를 더함(누워 있는 총알 이미지 세우기)
         float rotateDegree = -Mathf.Atan2(go.x, go.y) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotateDegree + 90f);
+        time = 500;
     }
 	
 	// Update is called once per frame
@@ -41,7 +42,7 @@ public class bullet : MonoBehaviour {
         GameObject target = collision.gameObject;
         if(target.tag == "monster") {
             target.GetComponent<HP>().currentHP -= 1;
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 }
