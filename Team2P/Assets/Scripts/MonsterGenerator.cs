@@ -9,6 +9,8 @@ public class MonsterGenerator : MonoBehaviour {
     public GameObject[] monster;
     private float interval = 5.0f;
     private float currentTime = 0.0f;
+    int waveCount = 0;
+
 	// Use this for initialization
 	void Start () {
 
@@ -24,26 +26,26 @@ public class MonsterGenerator : MonoBehaviour {
         switch(index) {
             // 위에서 스폰
             case 0: {
-                x = Random.Range(-5f, 5f);
-                y = 5f;
+                x = Random.Range(-15f, 15f);
+                y = 15f;
             }
             break;
             // 왼쪽에서 스폰
             case 1: {
-                x = -5f;
-                y = Random.Range(-5f, 5f);
+                x = -15f;
+                y = Random.Range(-15f, 15f);
             }
             break;
             // 오른쪽에서 스폰
             case 2: {
-                x = 5f;
-                y = Random.Range(-5f, 5f);
+                x = 15f;
+                y = Random.Range(-15f, 15f);
             }
             break;
             // 아래에서 스폰
             case 3: {
-                x = Random.Range(-5f, 5f);
-                y = -5f;
+                x = Random.Range(-15f, 15f);
+                y = -15f;
             }
             break;
         }
@@ -56,65 +58,113 @@ public class MonsterGenerator : MonoBehaviour {
         currentTime += Time.deltaTime;
         if(currentTime >= interval)
         {
-            int randtime = (int)Random.Range(0, 5);
-            if (randtime == 0)
-            {
-
-                for (int i = 0; i < 10; i++)
-                {   
-                    //Vector3 newPosition = new Vector3(Random.Range(-19.5f, 19.5f), Random.Range(19.5f, 19.5f), -1);
-                    Instantiate(monster[1], Spawn(), Quaternion.identity);
+            switch(waveCount % 6) {
+                // 슬라임 조금
+                case 0: {
+                    for(int i = 0; i < (1 + waveCount / 6); i++) {
+                        Instantiate(monster[0], Spawn(), Quaternion.identity);
+                    }
                 }
+                break;
+                // 좀비나 슬라임
+                case 1: {
+                    int randtime = (int)Random.Range(0, 2);
+                    if (randtime == 0)
+                    {
+                        // 슬라임
+                        for (int i = 0; i < (2 + waveCount / 6); i++)
+                        {   
+                            Instantiate(monster[0], Spawn(), Quaternion.identity);
+                        }
 
-            }
-            if (randtime == 1)
-            {
+                    }
+                    if (randtime == 1)
+                    {
+                        // 좀비
+                        for (int i = 0; i < (3 + waveCount / 3); i++)
+                        {
+                            Instantiate(monster[1], Spawn(), Quaternion.identity);
+                        }
 
-                for (int i = 0; i < 10; i++)
-                {
-                    //Vector3 newPosition = new Vector3(Random.Range(20f, 20f), Random.Range(18f, -18f), -1);
-                    Instantiate(monster[0], Spawn(), Quaternion.identity);
+                    }
                 }
-
-            }
-            if (randtime == 2)
-            {
-
-                for (int i = 0; i < 10; i++)
-                {
-                    //Vector3 newPosition = new Vector3(Random.Range(-18.9f, -18.9f), Random.Range(18.2f, -18.2f), -1);
-                    Instantiate(monster[2], Spawn(), Quaternion.identity);
+                break;
+                // 좀비나 슬라임 더 높은 난이도
+                case 2: {
+                    int randtime = (int)Random.Range(0, 2);
+                    if (randtime == 0)
+                    {
+                        // 슬라임
+                        for (int i = 0; i < (3 + waveCount / 3); i++)
+                        {   
+                            Instantiate(monster[0], Spawn(), Quaternion.identity);
+                        }
+                    }
+                    if (randtime == 1)
+                    {
+                        // 좀비
+                        for (int i = 0; i < (5 + waveCount / 3); i++)
+                        {
+                            Instantiate(monster[1], Spawn(), Quaternion.identity);
+                        }
+                    }
                 }
-
-            }
-            if (randtime == 3)
-            {
-
-                for (int i = 0; i < 10; i++)
-                {
-                    //Vector3 newPosition = new Vector3(Random.Range(-18.82f, 18.82f), Random.Range(-19.51f, -19.51f), -1);
-                    Instantiate(monster[3], Spawn(), Quaternion.identity);
+                break;
+                // 골렘이나 뱀파이어
+                case 3: {
+                    int randtime = (int)Random.Range(0, 2);
+                    if (randtime == 0)
+                    {
+                        // 골렘
+                        for (int i = 0; i < (2 + waveCount / 6); i++)
+                        {   
+                            Instantiate(monster[2], Spawn(), Quaternion.identity);
+                        }
+                    }
+                    if (randtime == 1)
+                    {
+                        // 뱀파이어
+                        for (int i = 0; i < (1 + waveCount / 6); i++)
+                        {
+                            Instantiate(monster[3], Spawn(), Quaternion.identity);
+                        }
+                    }
                 }
-
-            }
-            if (randtime == 4)
-            {
-
-                for (int i = 0; i < 10; i++)
-                {
-                    //Vector3 newPosition = new Vector3(Random.Range(-18.82f, 18.82f), Random.Range(-19.51f, -19.51f), -1);
-                    Instantiate(monster[4], Spawn(), Quaternion.identity);
+                break;
+                // 골렘이나 뱀파이어 더 높은 난이도
+                case 4: {
+                    int randtime = (int)Random.Range(0, 2);
+                    if (randtime == 0)
+                    {
+                        // 골렘
+                        for (int i = 0; i < (3 + waveCount / 3); i++)
+                        {   
+                            Instantiate(monster[2], Spawn(), Quaternion.identity);
+                        }
+                    }
+                    if (randtime == 1)
+                    {
+                        // 뱀파이어
+                        for (int i = 0; i < (2 + waveCount / 3); i++)
+                        {
+                            Instantiate(monster[3], Spawn(), Quaternion.identity);
+                        }
+                    }
                 }
-
+                break;
+                // 드래곤
+                case 5: {
+                    for(int i = 0; i < (1 + waveCount / 3); i++) {
+                        Instantiate(monster[4], Spawn(), Quaternion.identity);
+                    }
+                }
+                break;
             }
+
+            waveCount++;
             currentTime = 0;
+            
+            if(waveCount % 12 == 11) interval = Mathf.Clamp(interval - 1, 1.0f, 5.0f);
         }
-        //if (Time.time > nextTime)
-        //{
-        //    nextTime = TimeLeft * Time.deltaTime;
-        //    Vector3 newPosition = new Vector3(Random.Range(-19.5f, 19.5f), Random.Range(19.5f, 19.5f), -1);
-        //    Instantiate(monster[0], newPosition, Quaternion.identity);
-        //}
-
     }
 }

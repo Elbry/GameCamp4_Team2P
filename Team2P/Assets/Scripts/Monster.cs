@@ -5,7 +5,6 @@ using UnityEngine;
 public class Monster : MonoBehaviour {
 
     public float speed;
-    public float bSpeed;
     GameObject player;
     Rigidbody2D rb;
     Vector3 go;
@@ -21,8 +20,8 @@ public class Monster : MonoBehaviour {
     {
         if (isKnockingBack == false)
         {
-        go = (player.transform.position - transform.position).normalized;
-        rb.MovePosition(transform.position + go * speed * Time.deltaTime);
+            go = (player.transform.position - transform.position).normalized;
+            rb.MovePosition(transform.position + go * speed * Time.deltaTime);
         }
     }
 
@@ -47,7 +46,6 @@ public class Monster : MonoBehaviour {
         isKnockingBack = true;
         for (int i = 0; i < 20; i++)
         {
-            print("moving");
             rb.MovePosition((Vector2)transform.position + direction * 0.1f * Time.deltaTime * (20 - i));
             print(i);
             yield return new WaitForFixedUpdate();

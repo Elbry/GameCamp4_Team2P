@@ -8,6 +8,7 @@ public class HP : MonoBehaviour {
 	public int currentHP;
     GameObject GM;
 
+
     void Awake()
     {
         currentHP = maxHP;
@@ -16,11 +17,15 @@ public class HP : MonoBehaviour {
 
     void Update()
     {
-        // 이러면 주인공 죽을 때도 점수가 올라가지 않을까요?
-        if (currentHP <= 0)
+        if (currentHP <= 0 && gameObject.tag != "Player")
         {
             GM.GetComponent<GameManager>().score += 10;
             Destroy(gameObject);
+            GM.GetComponent<GameManager>().IncreaseKillCount();
+        }
+        else if (currentHP <= 0 && gameObject.tag == "Player")
+        {
+            GM.GetComponent<GameManager>().ShowGameEndWindow();
         }
     }
 }

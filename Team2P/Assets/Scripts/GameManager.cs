@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviour
 	Timer timer;
 	public int goalTime;
     public float score = 0f;
-    protected int nKillCount = 0;
+    public int nKillCount = 0;
 
     float fStartGameTime = 0.0f;
 
     public GameObject gameEndWindow = null;
+    public GameObject[] item;
 
 
 
@@ -26,22 +27,13 @@ public class GameManager : MonoBehaviour
 		GameStart();
 		timer.gameObject.SetActive(true);
 	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		if(timer.currentTime >= goalTime)
-        {
-			GameClear();
-		}
-        
-        // Test Code
-        if( Input.GetKeyUp(KeyCode.A) )
-        {
-            nKillCount = 10;
-            ShowGameEndWindow();
+
+    void Update() {
+        if((int)Time.time % 12 == 11
+            && ((Time.time - (int)Time.time > 0f)) && (Time.time - (int)Time.time < 0.02f)) {
+            Instantiate(item[Random.Range(0, 2)], new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), -1), Quaternion.identity);
         }
-	}
+    }
 
 	void GameStart()
     {
@@ -49,31 +41,21 @@ public class GameManager : MonoBehaviour
         fStartGameTime = Time.time;
 	}
 
-	void GamePause()
-    {
+    public void HitSound() {
 
-	}
-
-	void GameOver()
-    {
-        ShowGameEndWindow();
     }
-
-	void GameClear()
-    {
-
-	}
 
     void HideGameEndWindow()
     {
         gameEndWindow.SetActive(false);   // 게임 종료 화면을 비활성화 한다.
     }
 
-    void ShowGameEndWindow()
+    public void ShowGameEndWindow()
     {
+        Time.timeScale = 0f;
         float fPlayTime = Time.time - fStartGameTime;
-        gameEndWindow.GetComponent<GameEndWindow>().SetGameEndInfo(nKillCount, fPlayTime);
         gameEndWindow.SetActive(true);        // 게임 종료 화면을 활성화 한다.
+        gameEndWindow.GetComponent<GameEndWindow>().SetGameEndInfo(nKillCount, fPlayTime);
     }
 
     // 죽인 적의 수를 1증가 시킨다.

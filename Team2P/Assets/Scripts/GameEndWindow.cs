@@ -23,6 +23,7 @@ public class GameEndWindow : MonoBehaviour
 
     public void ReturnToTitle()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Title");
     }
 

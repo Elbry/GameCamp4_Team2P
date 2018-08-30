@@ -11,54 +11,72 @@ public class Player : MonoBehaviour {
     Vector3 move;
     public Vector3 go;
     Rigidbody2D rb;
-    float desh = 0;
+    float dash = 0;
     float dy;
     float dx;
     public Sprite[] ch;
-    bool isDesh;
+    bool isDash;
     // 넉백 중에는 플레이어 조작을 제한시키기 위해 도입된 bool 변수
     bool isKnockingBack;
     // 음향 효과를 내기 위해 받아 놓는 오브젝트
     SoundSystem soundSystem;
     // 걷는 소리 주기 조절 변수
     int walkCount = 20;
+    int initialCooltime = 10;
+    int cooltime;
+    int characterIndex = 0;
+    public AudioClip[] shotClip;
+    AudioSource shotSound;
+    public int damageMultiplier = 1;
+
     
 
 	// 플레이어의 입력을 받아 주인공 캐릭터를 조작하게 하는 스크립트
 	// Use this for initialization
 	void Start ()
     {
+        shotSound = gameObject.GetComponent<AudioSource>();
+        shotSound.clip = shotClip[0];
         soundSystem = GameObject.FindObjectOfType<SoundSystem>();
         rb = GetComponent<Rigidbody2D>();
         isKnockingBack = false;
+        cooltime = initialCooltime;
+        characterIndex = 0;
+        damageMultiplier = 1;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate ()
     {
         Look();
-        if (Input.GetMouseButtonDown(1) && isDesh == false)
+        if (Input.GetMouseButtonDown(1) && isDash == false)
         {
-            desh = speed*10;
+            dash = speed * 10;
+            isDash = true;
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && cooltime == 0)
         {
-            Instantiate(bullet, transform.position + go * 0.2f, Quaternion.identity);
+            GameObject newBullet = Instantiate(bullet, transform.position + go * 0.2f, Quaternion.identity);
+            if(characterIndex == 1) {
+                newBullet.transform.localScale *= 2;
+                newBullet.GetComponent<SpriteRenderer>().color = Color.cyan;
+                newBullet.GetComponent<bullet>().speed *= 2;
+            }
+            shotSound.PlayOneShot(shotSound.clip);
+            cooltime = initialCooltime;
         }
+        cooltime = Mathf.Clamp(cooltime - 1, 0, initialCooltime);
         
         // 넉백 중이지 않을 때에만 움직이거나 대시 할 수 있도록 함
-        if(isKnockingBack==false)
+        if(isKnockingBack == false)
         {
-            Move();
-            if (desh >= 1f)
-            {
-                Desh();
-                isDesh = true;
-            } else
-            {
-                isDesh = false;
+            if(isDash == true) {
+                Dash();
+                if(dash <= speed) isDash = false;
             }
+            else Move();
         }
+
         Look();
         Cam();
         Change();
@@ -73,6 +91,8 @@ public class Player : MonoBehaviour {
 
         // 걷는 동안 소리가 날 수 있도록 조건문 생성
         if(h != 0 || v != 0) {
+            if((transform.position.x < -19f && h < 0) || (transform.position.x > 19 && h > 0)) h = 0;
+            if((transform.position.y < -19f && v < 0) || (transform.position.y > 19 && v > 0)) v = 0;
             move = new Vector3(h, v, 0);
             move = move.normalized * speed * Time.deltaTime;
             rb.MovePosition(transform.position + move);
@@ -88,15 +108,15 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void Desh()
+    void Dash()
     {
-        rb.MovePosition(transform.position + go*desh*0.2f * Time.deltaTime);
-        desh -= 1f;
+        rb.MovePosition(transform.position + go * dash * 0.2f * Time.deltaTime);
+        dash -= 5f;
     }
 
     void Look()
     {
-        if (isDesh == false)
+        if (isDash == false)
         {
             //먼저 계산을 위해 마우스와 게임 오브젝트의 현재의 좌표를 임시로 저장합니다.
             Vector3 mPosition = Input.mousePosition; //마우스 좌표 저장
@@ -124,18 +144,27 @@ public class Player : MonoBehaviour {
 
     void Cam()
     {
-        cam.transform.position = new Vector3(transform.position.x, transform.position.y, -10);
+        cam.transform.position =
+            new Vector3(Mathf.Clamp(transform.position.x, -10.5f, 10.5f), Mathf.Clamp(transform.position.y, -13f, 13f), -10);
     }
 
     void Change()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && characterIndex != 0)
         {
-            GetComponent<SpriteRenderer>().sprite = ch[0];
+            characterIndex = 0;
+            GetComponent<SpriteRenderer>().sprite = ch[characterIndex];
+            initialCooltime = 10;
+            bullet.GetComponent<bullet>().damage = 1;
+            shotSound.clip = shotClip[characterIndex];
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha2) && characterIndex != 1)
         {
-            GetComponent<SpriteRenderer>().sprite = ch[1];
+            characterIndex = 1;
+            GetComponent<SpriteRenderer>().sprite = ch[characterIndex];
+            initialCooltime = 30;
+            bullet.GetComponent<bullet>().damage = 3;
+            shotSound.clip = shotClip[characterIndex];
         }
     }
 
@@ -159,7 +188,7 @@ public class Player : MonoBehaviour {
     IEnumerator KnockBack(GameObject target, Vector2 direction) {
         isKnockingBack = true;
         for(int i = 0; i < 20; i++) {
-            rb.MovePosition((Vector2)transform.position + direction*0.2f*Time.deltaTime*(20 - i));
+            rb.MovePosition((Vector2)transform.position + direction * Time.deltaTime * (20 - i));
             yield return new WaitForFixedUpdate();
         }
         isKnockingBack = false;

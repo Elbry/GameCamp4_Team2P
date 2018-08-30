@@ -8,6 +8,8 @@ public class bullet : MonoBehaviour {
     public float time;
     public GameObject player;
     Rigidbody2D rb;
+    public int damage;
+    SoundSystem SS;
 
     Vector3 go;
 
@@ -25,6 +27,8 @@ public class bullet : MonoBehaviour {
         float rotateDegree = -Mathf.Atan2(go.x, go.y) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0f, 0f, rotateDegree + 90f);
         time = 500;
+        damage = 1;
+        SS = GameObject.FindObjectOfType<SoundSystem>();
     }
 	
 	// Update is called once per frame
@@ -41,8 +45,10 @@ public class bullet : MonoBehaviour {
     void OnCollisionEnter2D(Collision2D collision) {
         GameObject target = collision.gameObject;
         if(target.tag == "monster") {
-            target.GetComponent<HP>().currentHP -= 1;
-            Destroy(gameObject);
+            target.GetComponent<HP>().currentHP -= damage * player.GetComponent<Player>().damageMultiplier;
+            SS.HitSound();
+            Destroy(gameObject);   
         }
+        if(target.tag == "border" || target.tag == "item") Destroy(gameObject);
     }
 }
