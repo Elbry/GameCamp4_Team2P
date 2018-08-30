@@ -154,7 +154,7 @@ public class MonsterGenerator : MonoBehaviour {
                 break;
                 // 드래곤
                 case 5: {
-                    for(int i = 0; i < (1 + waveCount / 3); i++) {
+                    for(int i = 0; i < (1 + waveCount / 6); i++) {
                         Instantiate(monster[4], Spawn(), Quaternion.identity);
                     }
                 }

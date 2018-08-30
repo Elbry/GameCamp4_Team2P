@@ -15,7 +15,10 @@ public class GameManager : MonoBehaviour
     public GameObject gameEndWindow = null;
     public GameObject[] item;
 
-
+    void Awake() {
+        Screen.SetResolution(1280, 720, FullScreenMode.FullScreenWindow);
+        Time.timeScale = 1f;
+    }
 
     // Use this for initialization
     void Start ()
@@ -29,10 +32,12 @@ public class GameManager : MonoBehaviour
 	}
 
     void Update() {
-        if((int)Time.time % 12 == 11
+        if((int)Time.time % 18 == 17
             && ((Time.time - (int)Time.time > 0f)) && (Time.time - (int)Time.time < 0.02f)) {
             Instantiate(item[Random.Range(0, 2)], new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), -1), Quaternion.identity);
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
     }
 
 	void GameStart()

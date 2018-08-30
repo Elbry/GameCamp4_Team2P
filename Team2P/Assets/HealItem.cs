@@ -8,7 +8,7 @@ public class HealItem : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D collision) {
 		if(collision.gameObject.tag == "Player") {
-			collision.gameObject.GetComponent<HP>().currentHP += 20;
+			collision.gameObject.GetComponent<HP>().currentHP += 10;
 			Destroy(gameObject);
 		}
 	}

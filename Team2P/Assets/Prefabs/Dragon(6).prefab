@@ -197,6 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
+  damage: 5
 --- !u!114 &114545032016845316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -208,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7dabe7ccfd6fd94c9c90fe2355d661f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 6
+  maxHP: 8
   currentHP: 5
 --- !u!212 &212324480654632636
 SpriteRenderer:

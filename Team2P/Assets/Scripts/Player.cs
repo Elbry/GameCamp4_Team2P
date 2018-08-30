@@ -138,14 +138,13 @@ public class Player : MonoBehaviour {
             //라디안 값(180도가 파이(3.141592654...)로)으로 출력되므로
             //라디안 값을 각도로 변화하기 위해 Rad2Deg를 곱해주어야 각도가 됩니다.
             go = new Vector3(dx, dy, 0).normalized;
-            
         }
     }
 
     void Cam()
     {
         cam.transform.position =
-            new Vector3(Mathf.Clamp(transform.position.x, -10.5f, 10.5f), Mathf.Clamp(transform.position.y, -13f, 13f), -10);
+            new Vector3(Mathf.Clamp(transform.position.x, -7.5f, 7.5f), Mathf.Clamp(transform.position.y, -13f, 13f), -10);
     }
 
     void Change()
@@ -174,7 +173,7 @@ public class Player : MonoBehaviour {
         GameObject target = collision.gameObject;
         if (target.tag == "monster")
         {
-            gameObject.GetComponent<HP>().currentHP -=1;
+            gameObject.GetComponent<HP>().currentHP -= target.gameObject.GetComponent<Monster>().damage;
             // 충돌이 일어난 지점과 몬스터 오브젝트의 중심 지점을 가지고 넉백되어야 할 방향 산출
             Vector2 relativePos = collision.contacts[0].otherRigidbody.worldCenterOfMass - collision.contacts[0].point;
             // 넉백 행동 자체는 외부의 코루틴 함수로

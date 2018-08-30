@@ -9,6 +9,7 @@ public class Monster : MonoBehaviour {
     Rigidbody2D rb;
     Vector3 go;
     bool isKnockingBack;
+    public int damage;
 
     void Awake ()
     {
@@ -27,13 +28,8 @@ public class Monster : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject == player)
-        {
-            player.GetComponent<HP>().currentHP -= 1;
-        }
         if (collision.gameObject.tag == "bullet")
         {
-            Debug.Log("1    11");
             // 충돌이 일어난 지점과 몬스터 오브젝트의 중심 지점을 가지고 넉백되어야 할 방향 산출
             Vector2 relativePos = collision.contacts[0].otherRigidbody.worldCenterOfMass - collision.contacts[0].point;
             // 넉백 행동 자체는 외부의 코루틴 함수로
