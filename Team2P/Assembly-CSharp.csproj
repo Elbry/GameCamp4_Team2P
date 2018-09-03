@@ -53,13 +53,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\HealItem.cs" />
+     <Compile Include="Assets\HPUI.cs" />
+     <Compile Include="Assets\ItemGenerator.cs" />
+     <Compile Include="Assets\KillCountUI.cs" />
+     <Compile Include="Assets\MusicSource.cs" />
+     <Compile Include="Assets\PowerItem.cs" />
+     <Compile Include="Assets\Scripts\bullet.cs" />
+     <Compile Include="Assets\Scripts\GameEndWindow.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\HP.cs" />
+     <Compile Include="Assets\Scripts\Monster.cs" />
      <Compile Include="Assets\Scripts\MonsterGenerator.cs" />
      <Compile Include="Assets\Scripts\Move.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
-     <Compile Include="Assets\Scripts\ScoreManager.cs" />
+     <Compile Include="Assets\Scripts\SceneButton.cs" />
+     <Compile Include="Assets\Scripts\SoundSystem.cs" />
      <Compile Include="Assets\Scripts\Timer.cs" />
+     <Compile Include="Assets\TimeUI.cs" />
+     <None Include="Assets\TeamInfo\엄현우.txt" />
+     <None Include="Assets\TeamInfo\안준성.txt" />
+     <None Include="Assets\TeamInfo\김영상.txt" />
+     <None Include="Assets\TeamInfo\문준형.txt" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/Owner/Desktop/Kim/게임/GameCamp4_Team2P/Team2P/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
